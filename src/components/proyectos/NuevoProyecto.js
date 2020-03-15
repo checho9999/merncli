@@ -1,6 +1,13 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
+import proyectoContext from '../../context/proyectos/proyectoContext'
 
 const NuevoProyecto = () => {
+
+    //State de lo proyectos
+    const proyectosContext = useContext(proyectoContext);
+
+    //Extraemos los datos desde el proyectoContext
+    const { formulario, mostrarFormulario } = proyectosContext;
 
     //state para actualizar los datos del usuario desde el input
     const [proyecto, guardarProyecto] = useState({
@@ -16,15 +23,23 @@ const NuevoProyecto = () => {
             ...proyecto,
             [e.target.name] : e.target.value
         })
+    }    
+
+    //Mostrar el formulario
+    const onClickFormulario = () => {
+        mostrarFormulario();
     }
- 
+     
     return ( 
         <Fragment>
             <button 
                 type="button"
                 className="btn btn-block btn-primario" 
+                onClick={onClickFormulario}
             >Nuevo Proyecto</button>
 
+            { formulario ? 
+                (
                         <form
                             className="formulario-nuevo-proyecto"
                         >
@@ -44,6 +59,8 @@ const NuevoProyecto = () => {
                             />
 
                         </form>
+                ) : null 
+            }
  
         </Fragment>
      );
