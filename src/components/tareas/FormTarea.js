@@ -1,14 +1,26 @@
-import React, { useState } from 'react';  
+import React, { useContext, useState } from 'react';
+import proyectoContext from '../../context/proyectos/proyectoContext';
 
 const FormTarea = () => {
 
     //state para actualizar los datos del usuario desde el input
-    const [tarea, guardarTarea] = useState({
+    const [ tarea, guardarTarea ] = useState({
         nombre: ''
     })
 
     //extraemos el nombre del proyecto desde el state
     const { nombre } = tarea;   
+
+    //State de los proyectos
+    const proyectosContext = useContext(proyectoContext);
+    //Extraemos los datos desde el proyectoContext
+    const { proyecto } = proyectosContext;
+
+    // Si no hay un proyecto seleccionado no mostramos nada
+    if(!proyecto) return null;
+
+    // Array destructuring para extraer el proyecto actual
+    const [ proyectoActual ] =  proyecto;
 
     //obtenemos todo lo ingresado por el usuario desde el input y lo actualizamos en el state
     const handleChange = e => {

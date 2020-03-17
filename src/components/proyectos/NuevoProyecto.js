@@ -3,14 +3,13 @@ import proyectoContext from '../../context/proyectos/proyectoContext'
 
 const NuevoProyecto = () => {
 
-    //State de lo proyectos
+    //State de los proyectos
     const proyectosContext = useContext(proyectoContext);
-
     //Extraemos los datos desde el proyectoContext
-    const { formulario, mostrarFormulario } = proyectosContext;
+    const { formulario, errorformulario, mostrarFormulario, agregarProyecto, mostrarError } = proyectosContext;
 
     //state para actualizar los datos del usuario desde el input
-    const [proyecto, guardarProyecto] = useState({
+    const [ proyecto, guardarProyecto ] = useState({
         nombre: ''
     });
     
@@ -23,9 +22,30 @@ const NuevoProyecto = () => {
             ...proyecto,
             [e.target.name] : e.target.value
         })
-    }    
+    }
+    
+    const onSubmitProyecto = e => {
+        //para que no se envie el query string en la parte superior, ni se recarge la pagina
+        e.preventDefault();
 
-    //Mostrar el formulario
+        //validamos el nombre del proyecto
+        if (nombre === ''){
+            //Llamamos al dispatch para informar el error
+            mostrarError();
+            return;
+        }
+
+        //agregamos el proyecto desde el state validado
+        agregarProyecto(proyecto);
+
+        //reiniciamos el nombre del proyecto en el formulario
+        guardarProyecto({
+            nombre: ''
+        })
+
+    }
+
+    //llamamos el dispatch para mostrar el formulario al crear un nuevo proyecto
     const onClickFormulario = () => {
         mostrarFormulario();
     }
@@ -42,6 +62,7 @@ const NuevoProyecto = () => {
                 (
                         <form
                             className="formulario-nuevo-proyecto"
+                            onSubmit={onSubmitProyecto}
                         >
                             <input 
                                 type="text"
@@ -62,6 +83,8 @@ const NuevoProyecto = () => {
                 ) : null 
             }
  
+            { errorformulario ? <p className='mensaje error'>El Nombre del Proyecto es Obligatorio</p> : null }
+
         </Fragment>
      );
 }
