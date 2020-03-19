@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import proyectoContext from '../../context/proyectos/proyectoContext';
+import tareaContext from '../../context/tareas/tareaContext';
 
 const FormTarea = () => {
 
@@ -16,6 +17,11 @@ const FormTarea = () => {
     //Extraemos los datos desde el proyectoContext
     const { proyecto } = proyectosContext;
 
+    //State de las tareas
+    const tareasContext = useContext(tareaContext);
+    //Extraemos los datos desde el tareaContext
+    const { errortarea, agregarTarea, validarTarea, obtenerTareas } = tareasContext;
+
     // Si no hay un proyecto seleccionado no mostramos nada
     if(!proyecto) return null;
 
@@ -30,9 +36,39 @@ const FormTarea = () => {
         })
     }
 
+    const onSubmit = e => {
+        //para que no se envie el query string en la parte superior, ni se recarge la pagina
+        e.preventDefault();
+
+        //validamos el nombre de la tarea
+        if (nombre === ''){
+            //Llamamos al dispatch para informar el error
+            validarTarea();
+            return;
+        }
+
+        ////Agregamos una nueva tarea al state////
+        //asignamos el proyecto actual
+        tarea.proyectoId = proyectoActual.id;
+        //seteamos el estado en false para que arranque en incompleto
+        tarea.estado = false;
+
+        agregarTarea(tarea);
+
+        //Filtramos las tareas asociadas al proyecto actualizadas con la nueva que se agrego
+        obtenerTareas(proyectoActual.id)  
+
+        //reiniciamos el nombre de la tarea en el formulario
+        guardarTarea({
+            nombre: ''
+        })
+
+    }
+
     return ( 
         <div className='formulario'>
             <form
+                onSubmit={onSubmit}
             >
                 <div className='contenedor-input'>
                     <input 
@@ -52,7 +88,7 @@ const FormTarea = () => {
                     />
                 </div>
             </form>
-            
+            { errortarea ? <p className='mensaje error'>El nombre de la Tarea es obligatorio</p> : null }
         </div>
      );
 }

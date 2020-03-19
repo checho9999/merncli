@@ -14,7 +14,8 @@ const ProyectoState = props => {
     const proyectos = [
         {id: 1, nombre: 'Tienda Virtual'},
         {id: 2, nombre: 'Intranet'},
-        {id: 3, nombre: 'Diseño Sitio Web'}
+        {id: 3, nombre: 'Diseño Sitio Web'},
+        {id: 4, nombre: 'MERN'}
     ];
 
     //State inicial del reducer
@@ -47,6 +48,7 @@ const ProyectoState = props => {
     //Creamos un nuevo proyecto
     const agregarProyecto = proyecto => {
 
+        //generamos un id unico
         proyecto.id = uuidv4();
  
         dispatch({
