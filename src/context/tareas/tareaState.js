@@ -3,8 +3,12 @@ import React, { useReducer } from 'react';
 import TareaContext from './tareaContext';
 import TareaReducer from './tareaReducer';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { TAREAS_PROYECTO, AGREGAR_TAREA,
-         VALIDAR_TAREA, ELIMINAR_TAREA
+         VALIDAR_TAREA, ELIMINAR_TAREA,
+         ESTADO_TAREA, TAREA_ACTUAL,
+         ACTUALIZAR_TAREA, LIMPIAR_TAREA
   } from '../../types';
 
 //Esta constante siempre tiene que empezar en mayuscula
@@ -23,7 +27,8 @@ const TareaState = props => {
             {id: 8, nombre: 'Elegir Hosting', estado: true, proyectoId: 4}
         ],
         tareasproyecto: null,
-        errortarea: false
+        errortarea: false,
+        tareaseleccionada: null
     }
 
     //Dispatch para ejecutar las acciones del reducer
@@ -39,6 +44,10 @@ const TareaState = props => {
 
     //Agregamos un tarea al proyecto activo
     const agregarTarea = tarea => {
+
+        //generamos un id unico
+        tarea.id = uuidv4();
+
         dispatch({
             type: AGREGAR_TAREA,
             payload: tarea
@@ -60,16 +69,52 @@ const TareaState = props => {
        })
    }
 
+    //Cambiamos el estado de una tarea
+    const cambiarEstadoTarea = tarea => {
+        dispatch({
+           type: ESTADO_TAREA,
+           payload: tarea
+       })
+    }
+
+    //Seleccionamos una tarea para editarla
+    const guardarTareaActual = tarea => {
+        dispatch({
+           type: TAREA_ACTUAL,
+           payload: tarea
+       })
+   }
+
+    //Edita una tarea existente seleccionada
+    const actualizarTarea = tarea => {
+        dispatch({
+           type: ACTUALIZAR_TAREA,
+           payload: tarea
+       })
+   }
+
+    //Limpiamos la tareaseleccionada para que se resetea al FormTarea original, luego de que la misma fue editada
+    const limpiarTarea = () => {
+        dispatch({
+            type: LIMPIAR_TAREA
+        })
+    } 
+
     return (
         <TareaContext.Provider
             value={{
                 tareas: state.tareas,
                 tareasproyecto: state.tareasproyecto,
                 errortarea: state.errortarea,
+                tareaseleccionada: state.tareaseleccionada,
                 obtenerTareas,
                 agregarTarea,
                 validarTarea,
-                eliminarTarea       
+                eliminarTarea,
+                cambiarEstadoTarea,
+                guardarTareaActual,
+                actualizarTarea,
+                limpiarTarea       
             }}
         >
             {props.children}

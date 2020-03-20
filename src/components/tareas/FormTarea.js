@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import proyectoContext from '../../context/proyectos/proyectoContext';
 import tareaContext from '../../context/tareas/tareaContext';
 
@@ -20,7 +20,22 @@ const FormTarea = () => {
     //State de las tareas
     const tareasContext = useContext(tareaContext);
     //Extraemos los datos desde el tareaContext
-    const { errortarea, agregarTarea, validarTarea, obtenerTareas } = tareasContext;
+    const { tareaseleccionada, errortarea, agregarTarea, validarTarea, obtenerTareas, actualizarTarea, limpiarTarea } = tareasContext;
+
+    //Detectamos si una tarea fue seleccionada o no para ser editada
+    useEffect(() => {
+        //si hay una tarea seleccionada
+        if(tareaseleccionada !== null){
+            guardarTarea(tareaseleccionada);
+        } else{ 
+            //caso contrario reseatemos el nombre para que no se muestre nada en el formulario
+            guardarTarea({
+                nombre: ''
+            })
+        }
+
+    }, [ tareaseleccionada ])
+
 
     // Si no hay un proyecto seleccionado no mostramos nada
     if(!proyecto) return null;
@@ -47,13 +62,23 @@ const FormTarea = () => {
             return;
         }
 
-        ////Agregamos una nueva tarea al state////
-        //asignamos el proyecto actual
-        tarea.proyectoId = proyectoActual.id;
-        //seteamos el estado en false para que arranque en incompleto
-        tarea.estado = false;
 
-        agregarTarea(tarea);
+        //Determinamos si es una nueva tarea o si es una tarea para edicion
+        if (tareaseleccionada === null){
+            //La tarea es nueva
+            ////Agregamos una nueva tarea al state////
+            //asignamos el proyecto actual
+            tarea.proyectoId = proyectoActual.id;
+            //seteamos el estado en false para que arranque en incompleto
+            tarea.estado = false;        
+            //llamamos al dispatch para agregar la nueva tarea
+            agregarTarea(tarea);
+        } else {
+            //Es una tarea existente para edicion, asi que llamamos al dispatch para actualizarla
+            actualizarTarea(tarea);
+            //llamamos al dispatch para limpiar la tareaseleccionada
+            limpiarTarea();
+        }
 
         //Filtramos las tareas asociadas al proyecto actualizadas con la nueva que se agrego
         obtenerTareas(proyectoActual.id)  
@@ -85,6 +110,7 @@ const FormTarea = () => {
                     <input 
                         type='submit'
                         className='btn btn-primario btn-submit btn-block'
+                        value={tareaseleccionada ? 'Editar Tarea' : 'Agregar Tarea'}
                     />
                 </div>
             </form>
