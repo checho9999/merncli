@@ -30,7 +30,7 @@ const ProyectoState = props => {
     const [ state, dispatch ] = useReducer(proyectoReducer, initialState);
 
     ////Serie de funciones para el CRUD////
-    //mostramo el formulario al crear un nuevo proyecto
+    //mostramos el formulario al crear un nuevo proyecto
     const mostrarFormulario = () => {
         dispatch({
             type: FORMULARIO_PROYECTO
