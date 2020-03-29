@@ -35,7 +35,6 @@ const AlertaState = props => {
         }, 5000);
     }
 
-
     return (
         <alertaContext.Provider
             value={{

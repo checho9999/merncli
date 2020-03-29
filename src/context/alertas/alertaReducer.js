@@ -1,6 +1,7 @@
 import { MOSTRAR_ALERTA, OCULTAR_ALERTA
        } from '../../types';
 
+//Aca se cambia el state
 export default (state, action) => {
     switch(action.type) {
         case MOSTRAR_ALERTA:

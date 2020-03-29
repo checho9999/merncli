@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import AlertaContext from '../../context/alertas/alertaContext'
+import AlertaContext from '../../context/alertas/alertaContext';
+import AuthContext from '../../context/autenticacion/authContext';
 
 const NuevaCuenta = () => {
 
@@ -8,6 +9,25 @@ const NuevaCuenta = () => {
     const alertaContext = useContext(AlertaContext);
     //Extraemos los datos desde el alertaContext
     const { alerta, mostrarAlerta } = alertaContext;
+
+    //State de las autenticacion
+    const authContext = useContext(AuthContext);
+    //Extraemos los datos desde el alertaContext
+    const { registrarUsuario } = authContext;
+    
+    /*
+    // En caso de que el usuario se haya autenticado o registrado o sea un registro duplicado
+    useEffect(() => {
+        if(autenticado) {
+            props.history.push('/proyectos');
+        }
+
+        if(mensaje) {
+            mostrarAlerta(mensaje.msg, mensaje.categoria);
+        }
+        // eslint-disable-next-line
+    }, [mensaje, autenticado, props.history]);
+    */
 
     //state para actualizar los datos del usuario desde el input
     const [ usuario, guardarUsuario ] = useState({
@@ -53,6 +73,13 @@ const NuevaCuenta = () => {
             mostrarAlerta('Los passwords no son iguales', 'alerta-error');
             return;
         }
+
+        //Una vez que la validacion es correcta, pasamos la NuevaCuenta de usuario al action
+        registrarUsuario({
+            nombre, 
+            email, 
+            password
+        });
 
     }
 
