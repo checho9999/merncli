@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AlertaContext from '../../context/alertas/alertaContext';
 import AuthContext from '../../context/autenticacion/authContext';
 
-const NuevaCuenta = () => {
+//Agregamos props para poder acceder el props.history a traves de react-router-dom
+const NuevaCuenta = ( props ) => {
 
     //State de las alertas
     const alertaContext = useContext(AlertaContext);
@@ -13,21 +14,21 @@ const NuevaCuenta = () => {
     //State de las autenticacion
     const authContext = useContext(AuthContext);
     //Extraemos los datos desde el alertaContext
-    const { registrarUsuario } = authContext;
+    const { mensaje, autenticado, registrarUsuario } = authContext;
     
-    /*
-    // En caso de que el usuario se haya autenticado o registrado o sea un registro duplicado
+    //Monitoreamos si el usuario ya estaba autenticado(registro correcto), o si es un registro duplicado
     useEffect(() => {
-        if(autenticado) {
+        //Si el usuario ya estaba autenticado(se acaba de registrar), lo redirigimos hacia sus proyectos
+        if ( autenticado ) {
             props.history.push('/proyectos');
         }
 
-        if(mensaje) {
+        //Llamamos al dispatch para informar la correspondiente alerta
+        if ( mensaje ) {
             mostrarAlerta(mensaje.msg, mensaje.categoria);
         }
         // eslint-disable-next-line
-    }, [mensaje, autenticado, props.history]);
-    */
+    }, [ mensaje, autenticado, props.history ]);
 
     //state para actualizar los datos del usuario desde el input
     const [ usuario, guardarUsuario ] = useState({
