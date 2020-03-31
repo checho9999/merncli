@@ -7,6 +7,7 @@ import { REGISTRO_EXITOSO, REGISTRO_ERROR,
 export default (state, action) => {
     switch(action.type) {
         case REGISTRO_EXITOSO:
+        case LOGIN_EXITOSO:
             localStorage.setItem('token', action.payload.token);
             return {
                 ...state,

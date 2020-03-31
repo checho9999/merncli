@@ -1,7 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import AlertaContext from '../../context/alertas/alertaContext';
+import AuthContext from '../../context/autenticacion/authContext';
 
-const Login = () => {
+//Agregamos props para poder acceder el props.history a traves de react-router-dom
+const Login = ( props ) => {
+
+    //State de las alertas
+    const alertaContext = useContext(AlertaContext);
+    //Extraemos los datos desde el alertaContext
+    const { alerta, mostrarAlerta } = alertaContext;
+
+    //State de las autenticacion
+    const authContext = useContext(AuthContext);
+    //Extraemos los datos desde el alertaContext
+    const { mensaje, autenticado, iniciarSesion } = authContext;
+
+    //Monitoreamos si el usuario ya estaba autenticado(inicio de sesion correcto), o si el email o el password ingresados son incorrectos
+    useEffect(() => {
+        //Si el usuario ya estaba autenticado(acaba de iniciar sesion), lo redirigimos hacia sus proyectos
+        if (autenticado) {
+            props.history.push('/proyectos');
+        }
+
+        //Llamamos al dispatch para informar la correspondiente alerta
+        if(mensaje) {
+            mostrarAlerta(mensaje.msg, mensaje.categoria);
+        }
+
+    }, [mensaje, autenticado, props.history]);
 
     //state para actualizar los datos del usuario desde el input
     const [ usuario, guardarUsuario ] = useState({
@@ -26,10 +53,19 @@ const Login = () => {
         //para que no se envie el query string en la parte superior, ni se recarge la pagina
         e.preventDefault();
 
+        //validamos el email y el password ingresado por el usuario
+        if(email.trim() === '' || password.trim() === '') {
+            mostrarAlerta('Todos los campos son obligatorios', 'alerta-error');
+        }
+
+        //Una vez que la validacion es correcta, pasamos el Login de usuario al action
+        iniciarSesion({ email, password });
     }
 
     return ( 
         <div className='form-usuario'>
+        { alerta ? ( <div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div> )  : null }
+
             <div className='contenedor-form sombra-dark'>
                 <h1>Iniciar Sesión</h1>
 
