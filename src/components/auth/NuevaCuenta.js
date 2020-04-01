@@ -11,9 +11,9 @@ const NuevaCuenta = ( props ) => {
     //Extraemos los datos desde el alertaContext
     const { alerta, mostrarAlerta } = alertaContext;
 
-    //State de las autenticacion
+    //State de la autenticacion
     const authContext = useContext(AuthContext);
-    //Extraemos los datos desde el alertaContext
+    //Extraemos los datos desde el authContext
     const { mensaje, autenticado, registrarUsuario } = authContext;
     
     //Monitoreamos si el usuario ya estaba autenticado(registro correcto), o si es un registro duplicado

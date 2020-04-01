@@ -18,7 +18,8 @@ const AuthState = props => { //Tambien podriamos extraer ({children}) y pasar {c
         token: localStorage.getItem('token'), //Si el usuario tuvo un login correcto guardamos su JWT
         autenticado: null,
         usuario: null, 
-        mensaje: null 
+        mensaje: null, 
+        cargando: true
     }
 
     //Dispatch para ejecutar las acciones del reducer
@@ -115,6 +116,14 @@ const AuthState = props => { //Tambien podriamos extraer ({children}) y pasar {c
         }
     }
 
+    //Cerramos la sesion del usuario
+    const cerrarSesion = () => {
+
+        dispatch({
+            type: CERRAR_SESION
+        })        
+    }
+
     return(
         <AuthContext.Provider
             value={{
@@ -122,8 +131,11 @@ const AuthState = props => { //Tambien podriamos extraer ({children}) y pasar {c
                 autenticado: state.autenticado,
                 usuario: state.usuario,
                 mensaje: state.mensaje,
-                registrarUsuario,
-                iniciarSesion
+                cargando: state.cargando,
+                registrarUsuario,                
+                iniciarSesion,
+                usuarioAutenticado,
+                cerrarSesion
             }}
         >{props.children}
 

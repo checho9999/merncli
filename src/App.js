@@ -7,10 +7,20 @@ import ProyectoState from './context/proyectos/proyectoState';
 import TareaState from './context/tareas/tareaState';
 import AlertaState from './context/alertas/alertaState';
 import AuthState from './context/autenticacion/authState';
+import tokenAuth from './config/token';
+import RutaPrivada from './components/rutas/RutaPrivada';
 
 function App() {
    
   //console.log(process.env.REACT_APP_BACKEND_URL);
+
+  //Revisamos si ya teniamos un token auth
+  const token = localStorage.getItem('token');
+
+  //Si el token existe, lo incluimos en el defaults headers del clienteAxios
+  if (token) {
+    tokenAuth(token);
+  }
 
   return (
     <ProyectoState>
@@ -20,8 +30,8 @@ function App() {
             <Router>
               <Switch>
                   <Route exact path='/' component={Login} />
-                  <Route exact path='/nueva-cuenta' component={NuevaCuenta} />
-                  <Route exact path='/proyectos' component={Proyectos} />
+                  <Route exact path='/nueva-cuenta' component={NuevaCuenta} />                   
+                  <RutaPrivada exact path='/proyectos' component={Proyectos} />
               </Switch>
             </Router>
           </AuthState>

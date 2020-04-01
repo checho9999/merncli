@@ -11,9 +11,9 @@ const Login = ( props ) => {
     //Extraemos los datos desde el alertaContext
     const { alerta, mostrarAlerta } = alertaContext;
 
-    //State de las autenticacion
+    //State de la autenticacion
     const authContext = useContext(AuthContext);
-    //Extraemos los datos desde el alertaContext
+    //Extraemos los datos desde el authContext
     const { mensaje, autenticado, iniciarSesion } = authContext;
 
     //Monitoreamos si el usuario ya estaba autenticado(inicio de sesion correcto), o si el email o el password ingresados son incorrectos
@@ -24,10 +24,10 @@ const Login = ( props ) => {
         }
 
         //Llamamos al dispatch para informar la correspondiente alerta
-        if(mensaje) {
+        if (mensaje) {
             mostrarAlerta(mensaje.msg, mensaje.categoria);
         }
-
+        // eslint-disable-next-line
     }, [mensaje, autenticado, props.history]);
 
     //state para actualizar los datos del usuario desde el input
