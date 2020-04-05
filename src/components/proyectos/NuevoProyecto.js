@@ -24,6 +24,7 @@ const NuevoProyecto = () => {
         })
     }
     
+    //Cuando el usuario submite un nuevo proyecto
     const onSubmitProyecto = e => {
         //para que no se envie el query string en la parte superior, ni se recarge la pagina
         e.preventDefault();

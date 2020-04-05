@@ -4,14 +4,6 @@ import tareaContext from '../../context/tareas/tareaContext';
 
 const FormTarea = () => {
 
-    //state para actualizar los datos del usuario desde el input
-    const [ tarea, guardarTarea ] = useState({
-        nombre: ''
-    })
-
-    //extraemos el nombre del proyecto desde el state
-    const { nombre } = tarea;   
-
     //State de los proyectos
     const proyectosContext = useContext(proyectoContext);
     //Extraemos los datos desde el proyectoContext
@@ -36,6 +28,13 @@ const FormTarea = () => {
 
     }, [ tareaseleccionada ])
 
+    //state para actualizar los datos del usuario desde el input
+    const [ tarea, guardarTarea ] = useState({
+        nombre: ''
+    })
+
+    //extraemos el nombre del proyecto desde el state
+    const { nombre } = tarea;   
 
     // Si no hay un proyecto seleccionado no mostramos nada
     if(!proyecto) return null;
@@ -51,6 +50,7 @@ const FormTarea = () => {
         })
     }
 
+    //Si el usuario quiere crear una nueva tarea o editarla
     const onSubmit = e => {
         //para que no se envie el query string en la parte superior, ni se recarge la pagina
         e.preventDefault();
@@ -62,15 +62,16 @@ const FormTarea = () => {
             return;
         }
 
-
         //Determinamos si es una nueva tarea o si es una tarea para edicion
         if (tareaseleccionada === null){
             //La tarea es nueva
             ////Agregamos una nueva tarea al state////
-            //asignamos el proyecto actual
-            tarea.proyectoId = proyectoActual.id;
-            //seteamos el estado en false para que arranque en incompleto
-            tarea.estado = false;        
+            //asignamos el proyecto actual...en mongo DB es proyecto y su id es _id
+            //tarea.proyectoId = proyectoActual.id;
+            tarea.proyecto =  proyectoActual._id;
+            //seteamos el estado en false para que arranque en incompleto...ya no es necesario, lo crea MongoDB
+            //tarea.estado = false;
+                    
             //llamamos al dispatch para agregar la nueva tarea
             agregarTarea(tarea);
         } else {
@@ -81,7 +82,8 @@ const FormTarea = () => {
         }
 
         //Filtramos las tareas asociadas al proyecto actualizadas con la nueva que se agrego
-        obtenerTareas(proyectoActual.id)  
+        //obtenerTareas(proyectoActual.id)...esto lo saque porque es undefined
+        obtenerTareas(proyectoActual._id);
 
         //reiniciamos el nombre de la tarea en el formulario
         guardarTarea({

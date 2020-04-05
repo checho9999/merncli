@@ -11,7 +11,7 @@ export default (state, action) => {
         case OCULTAR_ALERTA:
             return {
                 alerta: null
-                    }
+            }
         default:
             return state;
     }

@@ -7,8 +7,9 @@ const Tarea = ( { tarea } ) => {
     //State de las tareas
     const tareasContext = useContext(tareaContext);
     //Extraemos los datos desde el tareaContext
-    const { eliminarTarea, obtenerTareas, cambiarEstadoTarea, guardarTareaActual } = tareasContext;
-
+    //const { eliminarTarea, obtenerTareas, cambiarEstadoTarea, guardarTareaActual } = tareasContext;
+    const { eliminarTarea, obtenerTareas, actualizarTarea, guardarTareaActual } = tareasContext;
+    
     //State de los proyectos
     const proyectosContext = useContext(proyectoContext);
     //Extraemos los datos desde el proyectoContext
@@ -20,17 +21,20 @@ const Tarea = ( { tarea } ) => {
     //Eliminamos un proyecto existente
     const onClickEliminarTarea = id => {
         //llamamos al dispatch para eliminar la tarea seleccionada
-        eliminarTarea(id)
-        //hacemo un refresh de las tareas del proyecto activo
-        obtenerTareas(proyectoActual.id)
-    }
+        //eliminarTarea(id)
+        eliminarTarea(id, proyectoActual._id);
+        //hacemos un refresh de las tareas del proyecto activo
+        obtenerTareas(proyectoActual._id);
+        //obtenerTareas(proyectoActual.id)...esto lo saque porque es undefined
+     }
 
     //Modificamos el estado actual de la tarea
     const cambiarEstado = tarea => {
         //invertimos el valor del estado de la tarea ante el click del usuario
         tarea.estado = !tarea.estado
         //llamamos al dispatch para hacer efectivo el cambio del estado
-        cambiarEstadoTarea(tarea)
+        //cambiarEstadoTarea(tarea)       
+        actualizarTarea(tarea);
     }
 
     //Extraemos la tarea actual para editarla
@@ -38,6 +42,7 @@ const Tarea = ( { tarea } ) => {
         //llamamos al dispatch para confirmar la tarea seleccionada
         guardarTareaActual(tarea)
     }
+    
     return ( 
         <li className="tarea sombra">
             <p>{tarea.nombre} </p>
@@ -73,7 +78,7 @@ const Tarea = ( { tarea } ) => {
                 <button
                     type="button"
                     className="btn btn-secundario"
-                    onClick={() => onClickEliminarTarea(tarea.id)}
+                    onClick={() => onClickEliminarTarea(tarea._id)}
                 >Eliminar</button>
             </div>
         </li>

@@ -45,10 +45,9 @@ const Login = ( props ) => {
             ...usuario,
             [ e.target.name ] : e.target.value
         })
-
     }
 
-    //
+    //Si el usuario quiere iniciar sesion
     const onSubmit = e => {
         //para que no se envie el query string en la parte superior, ni se recarge la pagina
         e.preventDefault();

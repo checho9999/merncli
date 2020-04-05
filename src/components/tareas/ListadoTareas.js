@@ -16,6 +16,8 @@ const ListadoTareas = () => {
     //Extraemos las tareas del proyecto
     const { tareasproyecto } = tareasContext;
 
+    //tareasproyecto.map(tarea => console.log(tarea._id));
+
     //Mensaje por si no hay un proyecto seleccionado
     if(!proyecto) return <h2>Selecciona un proyecto</h2>;
 
@@ -38,7 +40,7 @@ const ListadoTareas = () => {
                     <TransitionGroup>
                     {tareasproyecto.map(tarea => (
                         <CSSTransition
-                            key={tarea.id}
+                            key={tarea._id}
                             timeout={200}
                             classNames='tarea'
                         >
