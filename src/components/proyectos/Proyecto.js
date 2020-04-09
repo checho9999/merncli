@@ -8,7 +8,7 @@ const Proyecto = ( { proyecto } ) => {
     const proyectosContext = useContext(proyectoContext);
     //Extraemos los datos desde el proyectoContext
     const { proyectoActual } = proyectosContext;
-
+    
     //State de las tareas
     const tareasContext = useContext(tareaContext);
     //Extraemos los datos desde el tareaContext

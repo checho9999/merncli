@@ -48,12 +48,12 @@ const TareaState = props => {
             const resultado = await clienteAxios.get('/api/tareas', { params: { proyecto }});
             
             console.log(resultado);
-
+         
             dispatch({
                 type: TAREAS_PROYECTO,
                 payload: resultado.data.tareas
             })
-
+            
         } catch (error) {
             console.log(error);
         }
@@ -68,11 +68,13 @@ const TareaState = props => {
         try {
             //Accedemos a la API para registrar la tarea
             const resultado = await clienteAxios.post('/api/tareas', tarea);
-            console.log(resultado);
+            console.log(resultado.data.tarea);
 
             dispatch({
                 type: AGREGAR_TAREA,
-                payload: tarea
+                //se estaba pasando 'tarea' y generaba un tarea solo con nombre, por eso ahora le paso toda la respuesta 
+                //y solo llamo a obtenerTareas desde Proyecto cuando se selecciona un proyecto determinado
+                payload: resultado.data.tarea
             })
             
         } catch (error) {

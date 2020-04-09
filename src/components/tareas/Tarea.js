@@ -9,7 +9,7 @@ const Tarea = ( { tarea } ) => {
     //Extraemos los datos desde el tareaContext
     //const { eliminarTarea, obtenerTareas, cambiarEstadoTarea, guardarTareaActual } = tareasContext;
     const { eliminarTarea, obtenerTareas, actualizarTarea, guardarTareaActual } = tareasContext;
-    
+
     //State de los proyectos
     const proyectosContext = useContext(proyectoContext);
     //Extraemos los datos desde el proyectoContext

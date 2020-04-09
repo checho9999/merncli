@@ -12,7 +12,8 @@ const FormTarea = () => {
     //State de las tareas
     const tareasContext = useContext(tareaContext);
     //Extraemos los datos desde el tareaContext
-    const { tareaseleccionada, errortarea, agregarTarea, validarTarea, obtenerTareas, actualizarTarea, limpiarTarea } = tareasContext;
+    //const { tareaseleccionada, errortarea, agregarTarea, validarTarea, obtenerTareas, actualizarTarea, limpiarTarea } = tareasContext;
+    const { tareaseleccionada, errortarea, agregarTarea, validarTarea, actualizarTarea, limpiarTarea } = tareasContext;
 
     //Detectamos si una tarea fue seleccionada o no para ser editada
     useEffect(() => {
@@ -71,7 +72,7 @@ const FormTarea = () => {
             tarea.proyecto =  proyectoActual._id;
             //seteamos el estado en false para que arranque en incompleto...ya no es necesario, lo crea MongoDB
             //tarea.estado = false;
-                    
+
             //llamamos al dispatch para agregar la nueva tarea
             agregarTarea(tarea);
         } else {
@@ -83,7 +84,7 @@ const FormTarea = () => {
 
         //Filtramos las tareas asociadas al proyecto actualizadas con la nueva que se agrego
         //obtenerTareas(proyectoActual.id)...esto lo saque porque es undefined
-        obtenerTareas(proyectoActual._id);
+        ////obtenerTareas(proyectoActual._id);...esto lo saque por solo es necesario traer las tareas cuando se selecciona el proyecto
 
         //reiniciamos el nombre de la tarea en el formulario
         guardarTarea({

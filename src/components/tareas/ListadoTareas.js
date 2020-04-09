@@ -16,7 +16,7 @@ const ListadoTareas = () => {
     //Extraemos las tareas del proyecto
     const { tareasproyecto } = tareasContext;
 
-    //tareasproyecto.map(tarea => console.log(tarea._id));
+    //tareasproyecto.map(tarea => console.log('ListadoTareas TAREAS TAREA ID: ' +  tarea._id));
 
     //Mensaje por si no hay un proyecto seleccionado
     if(!proyecto) return <h2>Selecciona un proyecto</h2>;
